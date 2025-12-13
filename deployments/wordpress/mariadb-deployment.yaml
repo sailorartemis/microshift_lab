@@ -20,7 +20,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: mariadb
-        image: docker.io/library/mariadb:10.6
+        image: docker.io/bitnami/mariadb:10.11.8
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: examplepassword

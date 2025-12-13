@@ -48,7 +48,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mariadb
-          image: docker.io/bitnami/mariadb:11.4
+          image: docker.io/library/mariadb:10.11
           ports:
             - containerPort: 3306
           env:
@@ -112,7 +112,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: owncloud
-          image: docker.io/owncloud/server:10.14
+          image: docker.io/owncloud/server:10.15
           ports:
             - containerPort: 8080
           env:
