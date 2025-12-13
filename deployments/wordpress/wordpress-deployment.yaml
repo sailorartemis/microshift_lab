@@ -21,6 +21,8 @@ spec:
       - name: wordpress
         image: docker.io/library/wordpress:6.5-apache
         env:
+        - name: APACHE_RUN_PORT
+          value: "8080"
         - name: WORDPRESS_DB_HOST
           value: mariadb
         - name: WORDPRESS_DB_USER
@@ -36,6 +38,10 @@ spec:
           mountPath: /var/www/html
         securityContext:
           allowPrivilegeEscalation: false
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: wordpress-data
         persistentVolumeClaim:
