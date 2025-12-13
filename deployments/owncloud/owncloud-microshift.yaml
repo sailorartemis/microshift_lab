@@ -106,48 +106,39 @@ spec:
       labels:
         app: owncloud
     spec:
-      securityContext:
-        fsGroup: 33
-        fsGroupChangePolicy: OnRootMismatch
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: owncloud
-          image: docker.io/owncloud/server:10.15
+          image: docker.io/library/owncloud/server:10.15
           ports:
             - containerPort: 8080
           env:
             - name: OWNCLOUD_DOMAIN
-              value: localhost
+              value: owncloud.local
             - name: OWNCLOUD_DB_TYPE
               value: mysql
+            - name: OWNCLOUD_DB_HOST
+              value: mariadb
             - name: OWNCLOUD_DB_NAME
               value: owncloud
             - name: OWNCLOUD_DB_USERNAME
               value: owncloud
             - name: OWNCLOUD_DB_PASSWORD
               value: owncloudpass
-            - name: OWNCLOUD_DB_HOST
-              value: mariadb
             - name: OWNCLOUD_ADMIN_USERNAME
               value: admin
             - name: OWNCLOUD_ADMIN_PASSWORD
-              value: adminpassword
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "512Mi"
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
+              value: adminpass
+            - name: OWNCLOUD_SKIP_CHOWN
+              value: "yes"
+            - name: OWNCLOUD_SKIP_SET_PERMISSIONS
+              value: "yes"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
           volumeMounts:
             - name: owncloud-data
-              mountPath: /mnt/data
+              mountPath: /var/www/owncloud
       volumes:
         - name: owncloud-data
           persistentVolumeClaim:
