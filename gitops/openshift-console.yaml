@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: deployments/openshift-console
   destination:
-    namespace: kube-system
+    namespace: openshift-console
     server: https://kubernetes.default.svc
   syncPolicy:
     automated:
