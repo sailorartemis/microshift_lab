@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: owncloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: docker.io/library/redis:7
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          args:
+            - redis-server
+            - /etc/redis/redis.conf
+            - --appendonly
+            - yes
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-data
