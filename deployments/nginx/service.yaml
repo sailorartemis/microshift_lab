@@ -4,11 +4,12 @@ metadata:
   name: nginx
   namespace: nginx
 spec:
-  type: NodePort
+  # Use ClusterIP and expose via an OpenShift Route instead of NodePort
+  type: ClusterIP
   selector:
     app: nginx
   ports:
     - name: http
       port: 8080
       targetPort: 8080
-      nodePort: 30088
+      # nodePort removed; Route will expose this service externally
