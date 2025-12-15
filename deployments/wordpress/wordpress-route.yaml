@@ -11,5 +11,3 @@ spec:
     weight: 100
   port:
     targetPort: 8080
-  # No `host` specified: OpenShift/MicroShift will generate a route hostname.
-  # To set a fixed FQDN, add `host: your.host.example` and ensure DNS points to the router.

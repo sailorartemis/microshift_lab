@@ -1,0 +1,6 @@
+apiServer:
+  subjectAltNames:
+    - apps.microshift.lab
+dns:
+  baseDomain: microshift.lab
+
