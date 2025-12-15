@@ -1,4 +1,4 @@
-# Microshift Lab
+# Microshift Lab Setup
 
 Setup  
 4 Cores  
@@ -10,12 +10,13 @@ DNS:
 *.microshift.lab
 
 
-# Install
+# Install Microshift
 
 Add subscription
 ```bash
-subscription-manager
+sudo subscription-manager
 ```
+
 
 Add Repo and Install
 ```bash
@@ -28,23 +29,36 @@ sudo dnf update
 sudo reboot
 ```
 
-Create Config for "oc"
+
+Create Pull Secret  
+https://console.redhat.com/openshift/install/pull-secret
 ```bash
-mkdir -p ~/.kube/
-sudo cat /var/lib/microshift/resources/kubeadmin/kubeconfig > ~/.kube/config
-chmod go-r ~/.kube/config
+sudo cp $HOME/openshift-pull-secret /etc/crio/openshift-pull-secret
+sudo chown root:root /etc/crio/openshift-pull-secret
+sudo chmod 600 /etc/crio/openshift-pull-secret
+``` 
+
+
+Firewall
+```bash
+sudo firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16
+sudo firewall-cmd --permanent --zone=trusted --add-source=169.254.169.1
+sudo firewall-cmd --reload
 ```
+
 
 Create VG
 ```bash
-pvcreate /dev/sdb
-vgcreate microshift /dev/sdb
+sudo pvcreate /dev/sdb
+sudo vgcreate microshift /dev/sdb
 ```
+
 
 Copy Config
 ```bash
 sudo cp microshift_config/config.yaml microshift_config/lvmd.yaml /etc/microshift/
 ```
+
 
 Start Service
 ```bash
@@ -52,18 +66,27 @@ sudo systemctl enable microshift
 sudo systemctl start microshift
 ```
 
-Firewall
-```bash
 
+Create Config for "oc"
+```bash
+mkdir -p ~/.kube/
+sudo cat /var/lib/microshift/resources/kubeadmin/kubeconfig > ~/.kube/config
+chmod go-r ~/.kube/config
+oc get pods -A
 ```
 
+
+oc bash completion
+```bash
+echo 'source <(oc completion bash)' >> ~/.bashrc
+```
 
 openshift-console  
 http://openshift-console.apps.microshift.lab
 
 
 
-
+###########################################################################
 Install Microshift links  
 https://docs.redhat.com/en/documentation/red_hat_build_of_microshift/4.20/  
 https://github.com/openshift/microshift/blob/main/docs/user/getting_started.md  
