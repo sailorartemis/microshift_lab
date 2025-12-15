@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Resources for the OpenShift console deployment
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - clusterrolebinding.yaml
+  - secret.yaml
+  - service.yaml
+  - route.yaml
+  - deployment.yaml
+
+# Add a small common label to help selection and tracking
+commonLabels:
+  app: openshift-console

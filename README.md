@@ -24,7 +24,7 @@ sudo subscription-manager repos \
     --enable rhocp-4.20-for-rhel-9-$(uname -m)-rpms \
     --enable fast-datapath-for-rhel-9-$(uname -m)-rpms
 sudo subscription-manager release --set=9.6
-sudo dnf install -y microshift openshift-clients
+sudo dnf install -y microshift openshift-clients git
 sudo dnf update
 sudo reboot
 ```

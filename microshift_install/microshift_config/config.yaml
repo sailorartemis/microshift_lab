@@ -3,4 +3,3 @@ apiServer:
     - apps.microshift.lab
 dns:
   baseDomain: microshift.lab
-
