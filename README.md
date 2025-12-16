@@ -14,30 +14,36 @@ DNS:
 
 Add subscription
 ```bash
-sudo subscription-manager
+sudo subscription-manager register
 ```
-
 
 Add Repo and Install
 ```bash
 sudo subscription-manager repos \
     --enable rhocp-4.20-for-rhel-9-$(uname -m)-rpms \
     --enable fast-datapath-for-rhel-9-$(uname -m)-rpms
+```
+
+Set fix Release  
+```bash
 sudo subscription-manager release --set=9.6
+```
+
+Install
+```bash
 sudo dnf install -y microshift openshift-clients git
-sudo dnf update
+sudo dnf update -y
 sudo reboot
 ```
 
-
 Create Pull Secret  
-https://console.redhat.com/openshift/install/pull-secret
+https://console.redhat.com/openshift/install/pull-secret  
 ```bash
-sudo cp $HOME/openshift-pull-secret /etc/crio/openshift-pull-secret
+echo '<SECRET-FROM-REDHAT>' > openshift-pull-secret
+sudo mv $HOME/openshift-pull-secret /etc/crio/openshift-pull-secret
 sudo chown root:root /etc/crio/openshift-pull-secret
 sudo chmod 600 /etc/crio/openshift-pull-secret
 ``` 
-
 
 Firewall
 ```bash
@@ -47,10 +53,10 @@ sudo firewall-cmd --reload
 ```
 
 
-Create VG
+Create VG for PV
 ```bash
 sudo pvcreate /dev/sdb
-sudo vgcreate microshift /dev/sdb
+sudo vgcreate microshift-pv /dev/sdb
 ```
 
 
@@ -89,8 +95,8 @@ http://openshift-console.apps.microshift.lab
 
 
 
-###########################################################################
-Install Microshift links  
+##########################  
+Microshift Official doku  
 https://docs.redhat.com/en/documentation/red_hat_build_of_microshift/4.20/  
 https://github.com/openshift/microshift/blob/main/docs/user/getting_started.md  
 
