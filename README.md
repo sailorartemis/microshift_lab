@@ -1,6 +1,8 @@
+#WIP
+
 # Microshift Lab Setup
 
-Virtualbox VM with RHEL 9.6  
+Virtualbox VM with RHEL 9.7  
 4 Cores  
 8 GB RAM  
 Disk1 50GB (System)  
@@ -26,7 +28,7 @@ sudo subscription-manager repos \
 
 Set fix Release  
 ```bash
-sudo subscription-manager release --set=9.6
+sudo subscription-manager release --set=9.7
 ```
 
 Install
@@ -36,10 +38,10 @@ sudo dnf update -y
 sudo reboot
 ```
 
-Create Pull Secret  
-https://console.redhat.com/openshift/install/pull-secret  
+Create Pull Secret  [pull-secret](https://console.redhat.com/openshift/install/pull-secret)
+  
 ```bash
-echo '<SECRET-FROM-REDHAT>' > openshift-pull-secret
+echo '<SECRET-FROM-REDHAT>' > $HOME/openshift-pull-secret
 sudo mv $HOME/openshift-pull-secret /etc/crio/openshift-pull-secret
 sudo chown root:root /etc/crio/openshift-pull-secret
 sudo chmod 600 /etc/crio/openshift-pull-secret
@@ -52,26 +54,27 @@ sudo firewall-cmd --permanent --zone=trusted --add-source=169.254.169.1
 sudo firewall-cmd --reload
 ```
 
-
 Create VG for PV
 ```bash
 sudo pvcreate /dev/sdb
 sudo vgcreate microshift-pv /dev/sdb
 ```
 
+Copy Config
+```bash
+git clone https://github.com/headii/k8s_deplyments.git
+cd k8s_deplyments
+```
 
 Copy Config
 ```bash
 sudo cp microshift_config/config.yaml microshift_config/lvmd.yaml /etc/microshift/
 ```
 
-
 Start Service
 ```bash
-sudo systemctl enable microshift
-sudo systemctl start microshift
+sudo systemctl enable --now microshift.service
 ```
-
 
 Create Config for "oc"
 ```bash
@@ -81,12 +84,32 @@ chmod go-r ~/.kube/config
 oc get pods -A
 ```
 
-
 oc bash completion
 ```bash
 echo 'source <(oc completion bash)' >> ~/.bashrc
 ```
 
+Install ArgoCD
+```bash
+oc create namespace argocd
+oc apply -f argocd-install.yaml -n argocd
+oc get pods -n argocd
+```
+
+Get Admin Password from ArgoCD
+```bash
+oc get secret argocd-initial-admin-secret -n argocd -o jsonpath={.data.password} | base64 -d
+```
+
+
+```bash
+echo "http://$(oc get route argocd-server -n argocd -o jsonpath='{.spec.host}')"
+```
+
+Install App bootstrap-cluster for Argo
+```bash
+oc apply -f 0-bootstrap/bootstrap.yaml
+```bash
 
 
 
@@ -101,4 +124,4 @@ https://docs.redhat.com/en/documentation/red_hat_build_of_microshift/4.20/
 https://github.com/openshift/microshift/blob/main/docs/user/getting_started.md  
 
 ISO Download:  
-https://developers.redhat.com/content-gateway/file/rhel/Red_Hat_Enterprise_Linux_9.6/rhel-9.6-x86_64-dvd.iso
+https://developers.redhat.com/content-gateway/file/rhel/Red_Hat_Enterprise_Linux_9.7/rhel-9.7-x86_64-dvd.iso
