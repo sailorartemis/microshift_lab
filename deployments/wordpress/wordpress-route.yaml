@@ -6,7 +6,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-#  host: "wordpress.apps.microshift.lab"
+  host: "wordpress.apps.microshift.lab"
   to:
     kind: Service
     name: wordpress
