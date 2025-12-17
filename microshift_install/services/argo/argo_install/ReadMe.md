@@ -1,3 +1,8 @@
+oc patch configmap argocd-cmd-params-cm -n argocd --type merge -p '{"data":{"server.insecure":"true"}}'
+oc rollout restart deployment argocd-server -n argocd
+
+
+
 oc -n argocd patch svc argocd-server -p '{
    "spec": {
       "type": "NodePort",
@@ -15,3 +20,5 @@ oc -n argocd patch deploy argocd-redis   --type=json   -p='[
       {"op":"remove","path":"/spec/template/spec/containers/0/securityContext"},
       {"op":"remove","path":"/spec/template/spec/initContainers/0/securityContext"}
    ]'
+
+

@@ -13,4 +13,4 @@ spec:
     weight: 100
   port:
     targetPort: http
-  # host: argocd.example.com
+  host: argocd.apps.microshift01.lab

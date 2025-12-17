@@ -1,0 +1,6 @@
+- op: remove
+  path: /spec/template/spec/securityContext
+- op: remove
+  path: /spec/template/spec/containers/0/securityContext
+- op: remove
+  path: /spec/template/spec/initContainers/0/securityContext
