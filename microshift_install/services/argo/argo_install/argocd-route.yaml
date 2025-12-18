@@ -13,7 +13,6 @@ spec:
     name: argocd-server
     weight: 100
   port:
-    targetPort: http
+    targetPort: https
   tls:
-    termination: edge
-    insecureEdgeTerminationPolicy: Redirect
+    termination: passthrough
