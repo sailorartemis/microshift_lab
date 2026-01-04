@@ -1,5 +1,8 @@
 ## ArgoCD
 
+![Alt text](screenshots/Screenshot_Argo.png "ArgoCD")
+
+
 ### Install
 ```bash
 oc apply -k microshift_install/services/argo/argo_install/
@@ -20,3 +23,4 @@ Install App bootstrap-cluster for Argo
 ```bash
 oc apply -f microshift_install/services/argo/argo_bootstrap_cluster/bootstrap-cluster.yaml
 ```
+

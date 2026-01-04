@@ -25,6 +25,3 @@ Prometeus config:
         metrics_path: /metrics
         scrape_interval: 30s
 ```
-
-Grafana Dasboard:
-https://grafana.com/grafana/dashboards/16337-trivy-operator-vulnerabilities/

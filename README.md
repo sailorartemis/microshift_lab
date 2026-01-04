@@ -8,17 +8,8 @@ Virtualbox VM with RHEL 9.7
 4 Cores  
 8 GB RAM  
 Disk1 50GB (System)  
-Disk2 50GB (Microshift-Storage)  
+Disk2 50GB (Storage)  
 
-
-## Microshift-Setup
-
-- Openshift-Console
-- ArgoCD
-- Monitorg Stack
-- Logging Stack 
-- Mino
-- Trivy
 
 
 ## Install Doku
