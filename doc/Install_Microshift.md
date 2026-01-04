@@ -53,6 +53,11 @@ git clone https://github.com/headii/k8s_deplyments.git
 cd k8s_deplyments
 ```
 
+Change Default Domain **microshift.lab** 
+```bash
+find . -type f -exec sed -i 's/microshift.lab/<YOUR.DOMAIN>/g' {} +
+```
+
 Copy Config
 ```bash
 sudo cp microshift_install/config/config.yaml microshift_install/config/lvmd.yaml /etc/microshift/

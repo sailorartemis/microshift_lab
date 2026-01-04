@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-create-owncloud-user
+  namespace: owncloud
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mc
+          image: minio/mc:RELEASE.2024-06-01T00-00-00Z
+          command: ["/bin/sh", "-c"]
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: accesskey
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secretkey
+            - name: OC_S3_USER
+              value: "owncloud"
+            - name: OC_S3_PASS
+              value: "owncloudpass"
+            - name: OC_S3_BUCKET
+              value: "owncloud"
+          args:
+            - |
+              set -e
+              until mc --insecure alias set myminio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} 2>/dev/null; do
+                echo "Waiting for minio..."
+                sleep 3
+              done
+              mc --insecure mb myminio/${OC_S3_BUCKET} || true
+              cat > /tmp/owncloud-policy.json <<'POL'
+              {
+                "Version":"2012-10-17",
+                "Statement":[
+                  {
+                    "Action":[ "s3:GetBucketLocation", "s3:ListBucket" ],
+                    "Effect":"Allow",
+                    "Resource":[ "arn:aws:s3:::${OC_S3_BUCKET}" ]
+                  },
+                  {
+                    "Action":[ "s3:*Object*" ],
+                    "Effect":"Allow",
+                    "Resource":[ "arn:aws:s3:::${OC_S3_BUCKET}/*" ]
+                  }
+                ]
+              }
+              POL
+              mc --insecure admin policy add myminio owncloud-policy /tmp/owncloud-policy.json || true
+              mc --insecure admin user add myminio ${OC_S3_USER} ${OC_S3_PASS} || true
+              mc --insecure admin policy set myminio owncloud-policy user=${OC_S3_USER} || true
+      # no volumes required

@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alloy
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alloy
+  template:
+    metadata:
+      labels:
+        app: alloy
+    spec:
+      containers:
+        - name: alloy
+          image: grafana/alloy:latest
+          args:
+            - run
+            - /etc/alloy/alloy.hcl
+          volumeMounts:
+            - name: config
+              mountPath: /etc/alloy
+      volumes:
+        - name: config
+          configMap:
+            name: alloy-config
+
+---            
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: observability
+data:
+  alloy.hcl: |
+    logging {
+      level = "info"
+    }
+
+    prometheus.scrape "node_exporter" {
+      targets = [
+        {
+          __address__ = "node-exporter.observability.svc.cluster.local:9100",
+        },
+      ]
+
+      forward_to = [prometheus.remote_write.local.receiver]
+    }
+
+    prometheus.scrape "kube_state_metrics" {
+      targets = [
+        {
+          __address__ = "kube-state-metrics.observability.svc.cluster.local:8080",
+        },
+      ]
+
+      forward_to = [prometheus.remote_write.local.receiver]
+    }
+
+    prometheus.scrape "kubelet" {
+      scheme = "https"
+
+      tls_config {
+        insecure_skip_verify = true
+      }
+
+      bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
+      targets = [
+        {
+          __address__       = "kubernetes.default.svc.cluster.local:443",
+          __metrics_path__  = "/metrics/cadvisor",
+        },
+      ]
+
+      forward_to = [prometheus.remote_write.local.receiver]
+    }
+
+    prometheus.remote_write "local" {
+      endpoint {
+        url = "http://mimir:9009/api/v1/push"
+      }
+    }
+
+    discovery.kubernetes "pods" {
+      role = "pod"
+    }
+
+    loki.source.kubernetes "pods" {
+      targets    = discovery.kubernetes.pods.targets
+      forward_to = [loki.write.default.receiver]
+    }
+
+    loki.write "default" {
+      endpoint {
+        url = "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+      }
+    }
+
+

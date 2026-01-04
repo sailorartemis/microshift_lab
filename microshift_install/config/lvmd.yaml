@@ -9,7 +9,7 @@ device-classes:
     volume-group: microshift-pv
 
     # Storage capacity in GiB to be spared
-    spare-gb: 10
+    #spare-gb: 0
 
     # A flag to indicate that this device-class is used by default
     default: true

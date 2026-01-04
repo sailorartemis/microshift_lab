@@ -1,12 +1,8 @@
-# WIP
-
 # Microshift Lab
 
-This is my Microshift 4.20 Lab Setup
+![Alt text](doc/screenshots/Screenshot_Pods.png "openshift-console")
 
-![Alt text](doc/screenshots/Screenshot_Pods.png "Optional title")
-
-## Setup
+## VM-Setup
 
 Virtualbox VM with RHEL 9.7  
 4 Cores  
@@ -14,13 +10,28 @@ Virtualbox VM with RHEL 9.7
 Disk1 50GB (System)  
 Disk2 50GB (Microshift-Storage)  
 
-DNS:  
-*.microshift.lab
+
+## Microshift-Setup
+
+- Openshift-Console
+- ArgoCD
+- Monitorg Stack
+- Logging Stack 
+- Mino
+- Trivy
 
 
 ## Install Doku
-[Install_Microshift](doc/Install_Microshift.md)
 
-[Install_Microshift_Services](doc/Install_Microshift_Services.md)
+- [DNS Setup](doc/DNS.md)
+- [Install Microshift](doc/Install_Microshift.md)
+- [Install Helm](doc/Install_Helm.md)
+- [Install Openshift Console](doc/Install_Openshift_Console.md)
+- [Install ArgoCD](doc/Install_ArgoCD.md)
+- [Install Monitoring Stack](doc/Install_Microshift_Services.md)
+- [Install Logging Stack](doc/Install_Microshift_Services.md)
+- [Install Trivy](doc/Install_Trivy.md)
 
-[Useful_Links](doc/Useful_Links.md)
+
+---
+- [Useful Links](doc/Useful_Links.md)

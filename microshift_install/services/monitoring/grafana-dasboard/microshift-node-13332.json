@@ -1,0 +1,106 @@
+{
+  "uid": "microshift-node-13332",
+  "title": "MicroShift Node Resources (13332-style)",
+  "tags": ["microshift", "node-exporter", "resources"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "10s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "node",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": "label_values(node_uname_info, nodename)",
+        "refresh": 1
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "CPU Usage per Core (%)",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "100 * (1 - rate(node_cpu_seconds_total{mode=\"idle\"}[5m]))",
+          "legendFormat": "cpu{{cpu}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU Load vs Cores",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 },
+      "targets": [
+        { "expr": "node_load1", "legendFormat": "Load 1m" },
+        { "expr": "node_load5", "legendFormat": "Load 5m" },
+        { "expr": "count(node_cpu_seconds_total{mode=\"idle\"})", "legendFormat": "CPU cores" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Memory Breakdown (bytes)",
+      "gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 },
+      "targets": [
+        { "expr": "node_memory_MemTotal_bytes", "legendFormat": "Total" },
+        { "expr": "node_memory_MemAvailable_bytes", "legendFormat": "Available" },
+        { "expr": "node_memory_Buffers_bytes", "legendFormat": "Buffers" },
+        { "expr": "node_memory_Cached_bytes", "legendFormat": "Cached" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Memory Usage %",
+      "gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))",
+          "legendFormat": "Used %"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Disk IO (bytes/sec)",
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "rate(node_disk_read_bytes_total[5m])",
+          "legendFormat": "Read {{device}}"
+        },
+        {
+          "expr": "rate(node_disk_written_bytes_total[5m])",
+          "legendFormat": "Write {{device}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Root Filesystem Usage %",
+      "gridPos": { "x": 12, "y": 12, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "100 * (1 - (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}))",
+          "legendFormat": "/"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Context Switches / sec",
+      "gridPos": { "x": 0, "y": 18, "w": 24, "h": 6 },
+      "targets": [
+        {
+          "expr": "rate(node_context_switches_total[5m])",
+          "legendFormat": "ctx switches"
+        }
+      ]
+    }
+  ]
+}

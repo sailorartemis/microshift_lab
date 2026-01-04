@@ -1,0 +1,20 @@
+operator:
+  scanNodeCollectorLimit: 0
+  scanJobsConcurrentLimit: 1
+  scanInterval: 24h
+  scanOnStart: false
+
+targetWorkloads:
+  - deployment
+  - statefulset
+  - daemonset
+  - cronjob
+  - job
+
+trivyOperator:
+  scanSbom: false
+  scanSecrets: false
+
+metrics:
+  enabled: true
+

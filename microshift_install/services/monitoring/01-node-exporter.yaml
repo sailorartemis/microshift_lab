@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: observability
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      serviceAccountName: node-exporter
+      hostNetwork: true
+      hostPID: true
+      containers:
+        - name: node-exporter
+          image: quay.io/openshift/origin-prometheus-node-exporter:4.20
+          args:
+            - "--path.rootfs=/host"
+          ports:
+            - name: metrics
+              containerPort: 9100
+          securityContext:
+            privileged: true
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: root
+              mountPath: /host
+              readOnly: true
+            - name: accelerators-config
+              mountPath: /var/node_exporter/accelerators_collector_config
+              readOnly: true
+      volumes:
+        - name: root
+          hostPath:
+            path: /
+        - name: accelerators-config
+          configMap:
+            name: node-exporter-accelerators
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-exporter-accelerators
+  namespace: observability
+data:
+  config.yaml: |
+    []
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: node-exporter
+  namespace: observability
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-exporter
+  namespace: observability
+spec:
+  selector:
+    app: node-exporter
+  ports:
+    - name: metrics
+      port: 9100
+      targetPort: 9100
