@@ -18,7 +18,7 @@ Windows:
 C:\Windows\system32\drivers\etc\hosts
 ```
 
-### Public Wildcard DNS
-- Use a free wildcard DNS service   
-https://nip.io/   
+### Public wildcard DNS
+- Use a free wildcard DNS service:
+https://nip.io/
 

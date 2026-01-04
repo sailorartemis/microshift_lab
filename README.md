@@ -4,23 +4,23 @@
 
 ## VM-Setup
 
-Virtualbox VM with RHEL 9.7  
+VirtualBox VM with RHEL 9.7  
 4 Cores  
 8 GB RAM  
-Disk1 50GB (System)  
-Disk2 50GB (Storage)  
+Disk 1: 50 GB (System)  
+Disk 2: 50 GB (Storage)  
 
 
 
-## Install Doku
+## Documentation
 
 - [DNS Setup](doc/DNS.md)
 - [Install Microshift](doc/Install_Microshift.md)
 - [Install Helm](doc/Install_Helm.md)
-- [Install Openshift Console](doc/Install_Openshift_Console.md)
-- [Install ArgoCD](doc/Install_ArgoCD.md)
-- [Install Monitoring Stack](doc/Install_Microshift_Services.md)
-- [Install Logging Stack](doc/Install_Microshift_Services.md)
+- [Install OpenShift Console](doc/Install_Openshift_Console.md)
+- [Install Argo CD](doc/Install_ArgoCD.md)
+- [Install Monitoring Stack](doc/Install_Monitoring_Stack.md)
+- [Install Logging Stack](doc/Install_Logging_Stack.md)
 - [Install Trivy](doc/Install_Trivy.md)
 
 

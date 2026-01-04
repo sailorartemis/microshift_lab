@@ -1,11 +1,11 @@
-## Monitroing Stack
+## Monitoring Stack
 
 ![Alt text](screenshots/Screenshot_Grafana.png "ArgoCD")
 
 - node-exporter
 - kube-state-metrics
-- prometheus
-- grafana
+- Prometheus
+- Grafana
 
 
 ### Install
@@ -27,7 +27,7 @@ echo "https://$(oc get route grafana -n observability -o jsonpath='{.spec.host}'
 ```
 
 ---
-#### Grafana Dasboards
+#### Grafana Dashboards
 - Node Exporter
 https://grafana.com/grafana/dashboards/1860-node-exporter-full/
 

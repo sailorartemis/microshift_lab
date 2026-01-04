@@ -1,7 +1,7 @@
-## Monitroing Stack
+## Monitoring Stack
 
-- alloy
-- loki
+- Alloy
+- Loki
 
 ### Install
 

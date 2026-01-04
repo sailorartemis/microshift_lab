@@ -1,4 +1,6 @@
-## ArgoCD
+## Trivy
+
+![Alt text](screenshots/Screenshot_Trivy.png "Trivy")
 
 ### Install
 
@@ -16,7 +18,7 @@ helm install trivy-operator aqua/trivy-operator \
   -f values.yaml
 ```
 
-Prometeus config:
+Prometheus config:
 ```yaml
     scrape_configs:
       - job_name: 'trivy-operator'

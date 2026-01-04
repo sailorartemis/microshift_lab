@@ -12,7 +12,7 @@ sudo subscription-manager repos \
     --enable fast-datapath-for-rhel-9-$(uname -m)-rpms
 ```
 
-Set fix RHEL Release  
+Set RHEL release to 9.7
 ```bash
 sudo subscription-manager release --set=9.7
 ```
@@ -24,7 +24,7 @@ sudo dnf update -y
 sudo reboot
 ```
 
-Create Pull Secret  [pull-secret](https://console.redhat.com/openshift/install/pull-secret)
+Create pull secret: [pull-secret](https://console.redhat.com/openshift/install/pull-secret)
   
 ```bash
 echo '<SECRET-FROM-REDHAT>' > $HOME/openshift-pull-secret
@@ -53,7 +53,7 @@ git clone https://github.com/headii/k8s_deplyments.git
 cd k8s_deplyments
 ```
 
-Change Default Domain **microshift.lab** 
+Change default domain `microshift.lab`
 ```bash
 find . -type f -exec sed -i 's/microshift.lab/<YOUR.DOMAIN>/g' {} +
 ```
@@ -68,7 +68,7 @@ Start Service
 sudo systemctl enable --now microshift.service
 ```
 
-oc bash completion
+Enable `oc` bash completion
 ```bash
 echo 'source <(oc completion bash)' >> ~/.bashrc
 ```
