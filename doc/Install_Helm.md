@@ -15,4 +15,3 @@ Enable shell completion
 helm completion bash | sudo tee /etc/bash_completion.d/helm
 source ~/.bashrc
 ```
-

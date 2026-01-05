@@ -3,6 +3,7 @@ operator:
   scanJobsConcurrentLimit: 1
   scanInterval: 24h
   scanOnStart: false
+  metricsVulnIdEnabled: true
 
 targetWorkloads:
   - deployment

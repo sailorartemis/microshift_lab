@@ -35,4 +35,5 @@ https://grafana.com/grafana/dashboards/1860-node-exporter-full/
 https://grafana.com/grafana/dashboards/13332-kube-state-metrics-v2/
 
 - Trivy
-https://grafana.com/grafana/dashboards/16337-trivy-operator-vulnerabilities/
+https://grafana.com/grafana/dashboards/16337-trivy-operator-vulnerabilities/  
+https://grafana.com/grafana/dashboards/22010-trivy-operator-image-cve-data/
