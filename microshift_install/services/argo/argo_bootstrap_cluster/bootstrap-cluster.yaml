@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/headii/k8s_deplyments.git
+    repoURL: https://github.com/headii/microshift_lab.git
     targetRevision: main
     path: gitops
   syncPolicy:
