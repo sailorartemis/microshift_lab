@@ -49,8 +49,8 @@ sudo vgdisplay
 
 Pull Repo
 ```bash
-git clone https://github.com/headii/k8s_deplyments.git
-cd k8s_deplyments
+git clone https://github.com/headii/microshift_lab.git
+cd microshift_lab
 ```
 
 Change default domain `microshift.lab`

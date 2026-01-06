@@ -1,0 +1,64 @@
+global:
+  logging:
+    level: warn
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  route:
+    enabled: true
+    hostname: argocd.apps.microshift01.lab
+    termination_type: edge
+    termination_policy: Allow
+
+repoServer:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+controller:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+redis:
+  enabled: true
+  # 🔐 SCC override
+  securityContext:
+    runAsUser: null
+    runAsGroup: null
+    fsGroup: null
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+dex:
+  enabled: false
+
+applicationSet:
+  enabled: true
+
