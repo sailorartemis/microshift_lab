@@ -1,21 +1,74 @@
+# ------------------------------
+# Trivy Operator trivy-helm.yaml
+# MicroShift 4-core / 8GB optimized
+# ------------------------------
+
 operator:
+  # Limits scanning workload
   scanNodeCollectorLimit: 0
   scanJobsConcurrentLimit: 1
-  scanInterval: 24h
+  scanInterval: 48h
   scanOnStart: false
   metricsVulnIdEnabled: true
 
-targetWorkloads:
-  - deployment
-  - statefulset
-  - daemonset
-  - cronjob
-  - job
+  # Resource limits for operator/controller
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
 
 trivyOperator:
+  # Disable heavy scans
   scanSbom: false
   scanSecrets: false
+  enableLoki: false   # Disable Loki containers
+
+  # Resource limits for operator pod
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 150m
+      memory: 256Mi
+
+scanJob:
+  # Cleanup scan jobs quickly after finish
+  ttlSecondsAfterFinished: 600
+
+  # Resources for scan jobs (Trivy memory/CPU heavy)
+  resources:
+    requests:
+      cpu: 300m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+trivy:
+  # DB refresh settings
+  dbUpdateInterval: 48h         # CVE DB refresh
+  javaDbUpdateInterval: 72h     # Java ecosystem DB
+  dbUpdateTimeout: 5m
+  skipDbUpdate: false
+
+  # Scan optimizations
+  ignoreUnfixed: true
+  severity:
+    - CRITICAL
+    - HIGH
+
+  # Resource limits for DB updates
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
 
 metrics:
   enabled: true
-

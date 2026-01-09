@@ -14,7 +14,7 @@ Install ArgoCD via Helm
 helm install argocd argo/argo-cd \
   -n argocd \
   --create-namespace \
-  -f microshift_install/services/argo/argo_install/values.yaml
+  -f microshift_install/services/argo/argo_install/argo-helm.yaml.yaml
 ```
 
 
