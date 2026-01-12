@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: playground
+  namespace: playground
+spec:
+  to:
+    kind: Service
+    name: playground-svc
+  port:
+    targetPort: 80
+  tls:
+    termination: edge
+
