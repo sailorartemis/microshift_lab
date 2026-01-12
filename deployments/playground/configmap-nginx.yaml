@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: playground-nginx-conf
+  namespace: playground
+data:
+  playground.conf: |
+    server {
+      listen 8080;
+      server_name _;
+
+      location / {
+        root /app;
+        index index.html;
+      }
+    }
+

@@ -36,7 +36,11 @@ spec:
         - name: nginx-run
           mountPath: /var/run
         - name: nginx-conf
-          mountPath: /etc/nginx/conf.d
+          mountPath: /etc/nginx/conf/server_blocks/playground.conf
+          subPath: playground.conf
+        - name: html
+          mountPath: /app/index.html
+          subPath: index.html
 
       volumes:
       - name: nginx-cache
@@ -44,5 +48,8 @@ spec:
       - name: nginx-run
         emptyDir: {}
       - name: nginx-conf
-        emptyDir: {}
-
+        configMap:
+          name: playground-nginx-conf
+      - name: html
+        configMap:
+          name: playground-html
