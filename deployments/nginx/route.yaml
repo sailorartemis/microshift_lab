@@ -11,4 +11,7 @@ spec:
     weight: 100
   port:
     targetPort: https
+  tls:
+    insecureEdgeTerminationPolicy: Allow
+    termination: edge
 
