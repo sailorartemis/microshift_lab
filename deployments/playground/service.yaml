@@ -4,10 +4,9 @@ metadata:
   name: playground-svc
   namespace: playground
 spec:
-  type: ClusterIP
   selector:
     app: playground
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
 
