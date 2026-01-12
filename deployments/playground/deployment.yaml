@@ -13,9 +13,17 @@ spec:
       labels:
         app: playground
     spec:
+      securityContext:
+        fsGroup: 101
       containers:
       - name: nginx
         image: nginx:stable
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
+      volumes:
+      - name: nginx-cache
+        emptyDir: {}
 
