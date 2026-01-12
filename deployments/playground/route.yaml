@@ -8,7 +8,7 @@ spec:
     kind: Service
     name: playground-svc
   port:
-    targetPort: 80
+    targetPort: https
   tls:
     termination: edge
 
