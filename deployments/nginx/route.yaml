@@ -10,8 +10,5 @@ spec:
     name: nginx
     weight: 100
   port:
-    targetPort: https
-  tls:
-    insecureEdgeTerminationPolicy: Allow
-    termination: edge
+    targetPort: 8080
 
