@@ -1,0 +1,212 @@
+# ==========================
+# Namespace
+# ==========================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observe
+---
+# ==========================
+# Loki ConfigMap
+# ==========================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: observe
+data:
+  local-config.yaml: |
+    auth_enabled: false
+    server:
+      http_listen_port: 3100
+    ingester:
+      lifecycler:
+        ring:
+          kvstore:
+            store: inmemory
+          replication_factor: 1
+      chunk_idle_period: 5m
+      chunk_retain_period: 30s
+    schema_config:
+      configs:
+        - from: 2020-10-24
+          store: boltdb-shipper
+          object_store: filesystem
+          schema: v11
+          index:
+            prefix: index_
+            period: 24h
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: /loki/index
+        cache_location: /loki/cache
+        shared_store: filesystem
+      filesystem:
+        directory: /loki/chunks
+    limits_config:
+      enforce_metric_name: false
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+---
+# ==========================
+# Loki Deployment
+# ==========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki
+  namespace: observe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      containers:
+        - name: loki
+          image: grafana/loki:2.9.0
+          args:
+            - -config.file=/etc/loki/local-config.yaml
+          ports:
+            - containerPort: 3100
+          volumeMounts:
+            - name: loki-data
+              mountPath: /loki
+            - name: loki-config
+              mountPath: /etc/loki
+      volumes:
+        - name: loki-data
+          emptyDir: {}    # ⚡ beschreibbares Volume, Non-Root-kompatibel
+        - name: loki-config
+          configMap:
+            name: loki-config
+---
+# ==========================
+# Loki Service
+# ==========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki
+  namespace: observe
+spec:
+  type: ClusterIP
+  selector:
+    app: loki
+  ports:
+    - port: 3100
+      targetPort: 3100
+---
+# ==========================
+# Promtail Deployment
+# ==========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtail
+  namespace: observe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promtail
+  template:
+    metadata:
+      labels:
+        app: promtail
+    spec:
+      containers:
+        - name: promtail
+          image: grafana/promtail:2.9.0
+          args:
+            - -config.file=/etc/promtail/config.yaml
+          volumeMounts:
+            - name: promtail-config
+              mountPath: /etc/promtail
+      volumes:
+        - name: promtail-config
+          configMap:
+            name: promtail-config
+---
+# ==========================
+# Promtail ConfigMap
+# ==========================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promtail-config
+  namespace: observe
+data:
+  config.yaml: |
+    server:
+      http_listen_port: 9080
+    positions:
+      filename: /tmp/positions.yaml
+    clients:
+      - url: http://loki:3100/loki/api/v1/push
+    scrape_configs:
+      - job_name: kubernetes-pods
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace]
+            action: keep
+            regex: observe
+---
+# ==========================
+# Grafana Deployment
+# ==========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: observe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana-oss:10.0.0
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: grafana-data
+              mountPath: /var/lib/grafana
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+      volumes:
+        - name: grafana-data
+          emptyDir: {}
+---
+# ==========================
+# Grafana Service
+# ==========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: observe
+spec:
+  type: ClusterIP
+  selector:
+    app: grafana
+  ports:
+    - port: 3000
+      targetPort: 3000
+
