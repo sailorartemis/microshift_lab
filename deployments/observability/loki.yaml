@@ -22,11 +22,10 @@ spec:
             - containerPort: 3100
           volumeMounts:
             - name: loki-config
-              mountPath: /etc/loki
+              mountPath: /loki
       volumes:
-        - name: loki-config
-          configMap:
-            name: loki-config
+        - name: loki-data
+          emptyDir: {}
 ---
 # Loki ConfigMap
 apiVersion: v1
