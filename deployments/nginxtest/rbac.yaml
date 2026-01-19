@@ -9,10 +9,7 @@ kind: Role
 metadata:
   name: nginxtest-role
   namespace: nginxtest
-rules:
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["get"]
+rules: [] # keine Rechte
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
