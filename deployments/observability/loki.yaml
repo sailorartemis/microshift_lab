@@ -23,9 +23,14 @@ spec:
           volumeMounts:
             - name: loki-config
               mountPath: /loki
+            - name: loki-config
+              mountPath: /etc/loki
       volumes:
         - name: loki-data
           emptyDir: {}
+        - name: loki-config
+          configMap:
+            name: loki-config
 ---
 # Loki ConfigMap
 apiVersion: v1
