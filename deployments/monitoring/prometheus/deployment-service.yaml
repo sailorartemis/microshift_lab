@@ -23,10 +23,14 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus
+            - name: prometheus-data
+              mountPath: /prometheus/data
       volumes:
         - name: config
           configMap:
             name: prometheus-config
+        - name: prometheus-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
