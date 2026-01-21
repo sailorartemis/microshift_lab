@@ -13,3 +13,4 @@ resources:
   - prometheus/deployment-service.yaml
   - prometheus/configmap.yaml
   - grafana/deployment-service.yaml
+  - grafana/route.yaml
