@@ -12,5 +12,6 @@ resources:
   - kube-state-metrics/service.yaml
   - prometheus/deployment-service.yaml
   - prometheus/configmap.yaml
+  - prometheus/route.yaml
   - grafana/deployment-service.yaml
   - grafana/route.yaml
