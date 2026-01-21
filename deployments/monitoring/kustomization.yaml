@@ -6,4 +6,4 @@ resources:
   - node-exporter/sa-rbac.yaml
   - node-exporter/daemonset.yaml
   - node-exporter/service.yaml
-
+  - node-exporter/rolebinding.yaml
