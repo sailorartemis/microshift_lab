@@ -10,3 +10,6 @@ resources:
   - kube-state-metrics/sa-rbac.yaml
   - kube-state-metrics/deployment.yaml
   - kube-state-metrics/service.yaml
+  - prometheus/deployment-service.yaml
+  - prometheus/config-map.yaml
+  - grafana/deployment-service.yaml
