@@ -13,6 +13,10 @@ spec:
       labels:
         app: grafana
     spec:
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-pvc
       containers:
         - name: grafana
           image: grafana/grafana:10.0.3
