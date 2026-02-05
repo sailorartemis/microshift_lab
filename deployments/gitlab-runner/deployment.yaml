@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-runner
+  namespace: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab-runner
+  template:
+    metadata:
+      labels:
+        app: gitlab-runner
+    spec:
+      serviceAccountName: gitlab-runner
+
+      securityContext:
+        runAsNonRoot: true
+
+      containers:
+      - name: gitlab-runner
+        image: gitlab/gitlab-runner:alpine
+        imagePullPolicy: IfNotPresent
+
+        env:
+        - name: CI_SERVER_URL
+          value: "https://gitlab.com/"
+        - name: RUNNER_NAME
+          value: "microshift-runner"
+        - name: RUNNER_EXECUTOR
+          value: "kubernetes"
+        - name: RUNNER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: gitlab-runner-secret
+              key: runner-token
+
+        securityContext:
+          runAsUser: 1001
+          runAsGroup: 1001
+          allowPrivilegeEscalation: false
+
+        volumeMounts:
+        - name: config
+          mountPath: /etc/gitlab-runner
+
+      volumes:
+      - name: config
+        configMap:
+          name: gitlab-runner-config
+
