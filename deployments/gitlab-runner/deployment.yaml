@@ -37,9 +37,9 @@ spec:
               key: runner-token
 
         securityContext:
-          runAsUser: 1001
-          runAsGroup: 1001
           allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
 
         volumeMounts:
         - name: config
