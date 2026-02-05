@@ -1,0 +1,10 @@
+stages:
+  - test
+
+hello-runner:
+  stage: test
+  image: alpine:latest
+  script:
+    - echo "GitLab Runner läuft!"
+    - echo "Job ausgeführt auf $(hostname)"
+
