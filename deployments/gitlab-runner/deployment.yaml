@@ -21,7 +21,7 @@ spec:
 
       containers:
       - name: gitlab-runner
-        image: gitlab/gitlab-runner:latest
+        image: gitlab/gitlab-runner:ubi-fips-0e423884
         imagePullPolicy: IfNotPresent
 
         env:
