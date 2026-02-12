@@ -1,4 +1,4 @@
-iapiVersion: apps.gitlab.com/v1beta2
+apiVersion: apps.gitlab.com/v1beta2
 kind: Runner
 metadata:
   name: small-infra-runner-v2
