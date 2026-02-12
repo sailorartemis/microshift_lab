@@ -1,0 +1,42 @@
+iapiVersion: apps.gitlab.com/v1beta2
+kind: Runner
+metadata:
+  name: small-infra-runner-v2
+  namespace: gitlab-runner-v2
+spec:
+  gitlabUrl: "https://gitlab.com"
+  token: gitlab-runner-secret-v2
+  buildImage: "registry.access.redhat.com/ubi9/ubi:9.6"
+
+  tags: "kubernetes,infra,kaniko,k8s"
+  runUntagged: false
+  locked: false
+
+  concurrent: 12
+
+  config: runner-config-v2
+
+#  env: runner-proxy-env
+
+  podSpec:
+    - name: runner-resources-v2
+      patch: |
+        containers:
+        - name: runner-v2
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+      patchType: strategic
+
+    - name: request-concurrency-v2
+      patch: |
+        containers:
+        - name: runner-v2
+          env:
+          - name: RUNNER_REQUEST_CONCURRENCY
+            value: "4"
+      patchType: strategic

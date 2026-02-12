@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runner-proxy-env-v2
+  namespace: gitlab-runner-v2
+data:
+  HTTP_PROXY: "http://proxy.example.com:1234"
+  HTTPS_PROXY: "http://proxy.example.com:1234"
+  NO_PROXY: ".local,.svc,localhost,127.0.0.1,"

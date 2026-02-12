@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: gitlab-runner-catalog-v2
+  namespace: olm
+spec:
+  sourceType: grpc
+  image: registry.gitlab.com/gitlab-org/cluster-integration/gitlab-runner-operator-catalog:latest
+
