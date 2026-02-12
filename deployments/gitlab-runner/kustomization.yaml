@@ -8,3 +8,4 @@ resources:
   - 04-configmap-runner.yaml
   - 04b-configmap-proxy.yaml
   - 05-gitlabrunner.yaml
+  - gitlab-runnner-catalog.yaml
